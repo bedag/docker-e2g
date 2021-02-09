@@ -1,0 +1,60 @@
+#
+# Copyright © 2021 Bedag Informatik AG
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+FROM {{ build.image }} as build
+MAINTAINER {{ maintainer }}
+
+LABEL  \{% for tag in _dest['tags']|list %}
+  "tag.{{ tag }}.repository"="{{ _dest['namespace'] }}/{{ _dest['name'] }}" \
+  "tag.{{ tag }}.source"="{{ _source["name"] }}:{{ _source["tag"] }}" \
+  "tag.{{ tag }}.git.repo"="{{ git_repo }}" \
+  "tag.{{ tag }}.git.ref"="{{ git_ref }}" \
+  "tag.{{ tag }}.git.commit"="{{ git_commit }}" \
+{%- endfor %}
+  "maintainer"="{{ maintainer }}" \
+{% if latest == true %}
+
+  "tag.latest.repository"="{{ _dest['namespace'] }}/{{ _dest['name'] }}" \
+  "tag.latest.source"="{{ _source["name"] }}:{{ _source["tag"] }}" \
+  "tag.latest.git.repo"="{{ git_repo }}" \
+  "tag.latest.git.ref"="{{ git_ref }}" \
+  "tag.latest.git.commit"="{{ git_commit }}" \
+{% endif %}
+
+RUN apk add wget autoconf unzip automake pcre-dev clamav-dev build-base xz zlib-static zlib-dev
+
+WORKDIR /tmp/build/
+
+RUN wget https://github.com/e2guardian/e2guardian/archive/v{{ major }}.{{ minor }}.{{ patch }}.zip -O e2g.zip && \
+  unzip e2g.zip && \
+    cd e2guardian-{{ major }}.{{ minor }}.{{ patch }} && \
+  ./autogen.sh && \
+  ./configure --prefix=/usr/local/e2guardian --with-proxygroup=nobody --enable-icap=yes --enable-clamd=yes && \
+  make LDFLAGS='--static' && \
+  make install && \
+  mkdir /artifacts && cd /artifacts && \
+  cp -r --parents /usr/local/e2guardian . && \
+  cp -r --parents /lib/ld-musl-*.so.1 . && \
+        sed -i "s/^.\{0,1\}dockermode = off$/dockermode = on/g" ./usr/local/e2guardian/etc/e2guardian/e2guardian.conf && \
+        sed -i "s/^.\{0,1\}#icapport = 1344/icapport = 1344/g" ./usr/local/e2guardian/etc/e2guardian/e2guardian.conf && \
+        chmod a+rw ./usr/local/e2guardian/var/log/e2guardian && \
+        chown nobody: ./usr/local/e2guardian/var/ -R
+
+FROM {{ _source["name"] }}:{{ _source["tag"] }}
+USER nobody
+COPY --from=build /artifacts ./
+
+EXPOSE 1344/tcp
+ENTRYPOINT ["/usr/local/e2guardian/sbin/e2guardian"]
+CMD ["-N"]

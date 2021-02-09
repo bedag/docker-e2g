@@ -1,0 +1,106 @@
+---
+#
+# Copyright © 2021 Bedag Informatik AG
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+build_base: &build_base
+  source:
+    name: alpine
+    tags: ["3.13"]
+
+prod_base: &prod_base
+  source:
+    name: "gcr.io/distroless/cc"
+    tags: ["latest"]
+
+debug_base: &debug_base
+  source:
+    name: gcr.io/distroless/cc
+    tags: ["debug"]
+
+#global
+global: &global
+  namespace: "bedag"
+  name: e2g
+
+global_vars: &global_vars
+    maintainer: "noc@bedag.ch"
+    build:
+      image: alpine:3.13
+
+# e2g versions
+534vars: &534vars
+  variables:
+    <<: *global_vars
+    major: 5
+    minor: 3
+    patch: 4
+    latest: true
+
+533vars: &533vars
+  variables:
+    <<: *global_vars
+    major: 5
+    minor: 3
+    patch: 3
+415vars: &415vars
+  variables:
+    <<: *global_vars
+    major: 4
+    minor: 1
+    patch: 5
+
+# selectors for builds
+selectors:
+  master_and_tags: &master_and_tags ['^tag-(\d+\.)+\d+$', '^branch-main$']
+
+build_prod_template: &build_prod_template
+  - <<: *global
+    <<: *prod_base
+    tags:
+    - template: "{{ major }}.{{ minor }}.{{ patch }}-{{ git_commit }}"
+      selectors: *master_and_tags
+    - template: "{{ major }}.{{ minor }}.{{ patch }}"
+      selectors: *master_and_tags
+    - template: "{{ major }}.{{ minor }}"
+      selectors: *master_and_tags
+    - template: "{{ major }}"
+      selectors: *master_and_tags
+build_debug_template: &build_debug_template
+  - <<: *global
+    <<: *debug_base
+    tags:
+    - template: "{{ major }}.{{ minor }}.{{ patch }}-{{ git_commit }}-debug"
+      selectors: *master_and_tags
+    - template: "{{ major }}.{{ minor }}.{{ patch }}-debug"
+      selectors: *master_and_tags
+    - template: "{{ major }}.{{ minor }}-debug"
+      selectors: *master_and_tags
+    - template: "{{ major }}-debug"
+      selectors: *master_and_tags
+
+# set newest release at the bottom
+builds:
+- <<: *build_prod_template
+  <<: *415vars
+- <<: *build_debug_template
+  <<: *415vars
+- <<: *build_prod_template
+  <<: *533vars
+- <<: *build_debug_template
+  <<: *533vars
+- <<: *build_prod_template
+  <<: *534vars
+- <<: *build_debug_template
+  <<: *534vars
