@@ -29,9 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: image-build-action
-        # You may pin to the exact commit or the version.
-        # uses: bedag/image-build-action@d090a1d9d3f31ca2bb6c42480347ef202a5a019d
-        uses: bedag/image-build-action@1.0.0
+        uses: bedag/image-build-action@main
         with:
           push: true
           docker_username: ${{ secrets.DOCKERHUB_USERNAME }}

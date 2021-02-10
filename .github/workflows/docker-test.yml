@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: image-build-action
-        uses: bedag/image-build-action@1.0.0
+        uses: bedag/image-build-action@main
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
