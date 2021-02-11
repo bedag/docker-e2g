@@ -93,6 +93,7 @@ build_prod_template: &build_prod_template
     - template: "{{ major }}.{{ minor }}"
     - template: "{{ major }}"
     - template: "{%- if latest == true %}latest{% else %}dummy{%- endif %}"
+    
 build_debug_template: &build_debug_template
   - <<: *global
     <<: *debug_base
