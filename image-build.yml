@@ -56,6 +56,22 @@ global_vars: &global_vars
     patch: 3
     latest: false
 
+522vars: &522vars
+  variables:
+    <<: *global_vars
+    major: 5
+    minor: 2
+    patch: 2
+    latest: false
+
+512vars: &512vars
+  variables:
+    <<: *global_vars
+    major: 5
+    minor: 2
+    patch: 2
+    latest: false
+
 415vars: &415vars
   variables:
     <<: *global_vars
@@ -77,6 +93,7 @@ build_prod_template: &build_prod_template
     - template: "{{ major }}.{{ minor }}"
     - template: "{{ major }}"
     - template: "{%- if latest == true %}latest{% else %}dummy{%- endif %}"
+    
 build_debug_template: &build_debug_template
   - <<: *global
     <<: *debug_base
@@ -93,6 +110,14 @@ builds:
   <<: *415vars
 - <<: *build_debug_template
   <<: *415vars
+- <<: *build_prod_template
+  <<: *512vars
+- <<: *build_debug_template
+  <<: *512vars
+- <<: *build_prod_template
+  <<: *522vars
+- <<: *build_debug_template
+  <<: *522vars
 - <<: *build_prod_template
   <<: *533vars
 - <<: *build_debug_template
