@@ -2,11 +2,13 @@
 
  # e2guardian Docker Image
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) ![docker-publish](https://github.com/Bedag/e2g/workflows/docker-publish/badge.svg) [![Dockerhub](https://img.shields.io/docker/pulls/Bedag/e2g?style=plastic)](https://hub.docker.com/r/Bedag/e2g)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) ![docker-publish](https://github.com/bedag/docker-e2g/workflows/docker-publish/badge.svg) [![Dockerhub](https://img.shields.io/docker/pulls/bedag/e2g?style=plastic)](https://hub.docker.com/r/bedag/e2g)
 
 ![Bedag](https://www.bedag.ch/wGlobal/wGlobal/layout/images/logo.svg)
 
 This is a docker project for [e2guardian](https://github.com/e2guardian/e2guardian/).
+
+Find images on [dockerhub](https://hub.docker.com/repository/docker/bedag/e2g).
 
 ## Usage
 

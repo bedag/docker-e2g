@@ -13,7 +13,6 @@
 # limitations under the License.
 #
 FROM {{ build.image }} as build
-MAINTAINER {{ maintainer }}
 
 LABEL  \{% for tag in _dest['tags']|list %}
   "tag.{{ tag }}.repository"="{{ _dest['namespace'] }}/{{ _dest['name'] }}" \
@@ -22,13 +21,6 @@ LABEL  \{% for tag in _dest['tags']|list %}
   "tag.{{ tag }}.git.ref"="{{ git_ref }}" \
   "tag.{{ tag }}.git.commit"="{{ git_commit }}" \
 {%- endfor %}
-{% if latest == true %}
-  "tag.latest.repository"="{{ _dest['namespace'] }}/{{ _dest['name'] }}" \
-  "tag.latest.source"="{{ _source["name"] }}:{{ _source["tag"] }}" \
-  "tag.latest.git.repo"="{{ git_repo }}" \
-  "tag.latest.git.ref"="{{ git_ref }}" \
-  "tag.latest.git.commit"="{{ git_commit }}" \
-{% endif %}
   "maintainer"="{{ maintainer }}" 
 
 RUN apk add wget autoconf unzip automake pcre-dev clamav-dev build-base xz zlib-static zlib-dev

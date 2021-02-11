@@ -73,25 +73,19 @@ build_prod_template: &build_prod_template
     <<: *prod_base
     tags:
     - template: "{{ major }}.{{ minor }}.{{ patch }}-{{ git_commit }}"
-      selectors: *master_and_tags
     - template: "{{ major }}.{{ minor }}.{{ patch }}"
-      selectors: *master_and_tags
     - template: "{{ major }}.{{ minor }}"
-      selectors: *master_and_tags
     - template: "{{ major }}"
-      selectors: *master_and_tags
+    - template: "{%- if latest == true %}latest{% else %}dummy{%- endif %}"
 build_debug_template: &build_debug_template
   - <<: *global
     <<: *debug_base
     tags:
     - template: "{{ major }}.{{ minor }}.{{ patch }}-{{ git_commit }}-debug"
-      selectors: *master_and_tags
     - template: "{{ major }}.{{ minor }}.{{ patch }}-debug"
-      selectors: *master_and_tags
     - template: "{{ major }}.{{ minor }}-debug"
-      selectors: *master_and_tags
     - template: "{{ major }}-debug"
-      selectors: *master_and_tags
+    - template: "{%- if latest == true %}latest-debug{% else %}dummy{%- endif %}"
 
 # set newest release at the bottom
 builds:
