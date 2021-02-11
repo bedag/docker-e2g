@@ -54,12 +54,15 @@ global_vars: &global_vars
     major: 5
     minor: 3
     patch: 3
+    latest: false
+
 415vars: &415vars
   variables:
     <<: *global_vars
     major: 4
     minor: 1
     patch: 5
+    latest: false
 
 # selectors for builds
 selectors:
