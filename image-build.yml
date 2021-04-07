@@ -54,7 +54,7 @@ global_vars: &global_vars
     major: 5
     minor: 3
     patch: 4
-    latest: true
+    latest: false
 
 533vars: &533vars
   variables:
