@@ -48,4 +48,4 @@ COPY --from=build /artifacts ./
 
 EXPOSE 1344/tcp
 ENTRYPOINT ["/usr/local/e2guardian/sbin/e2guardian"]
-CMD ["-N"]
+CMD ["-N", "-c", "/usr/local/e2guardian/etc/e2guardian/e2guardian.conf"]
