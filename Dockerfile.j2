@@ -27,7 +27,7 @@ RUN apk add wget autoconf unzip automake pcre-dev clamav-dev build-base xz zlib-
 
 WORKDIR /tmp/build/
 
-RUN wget https://github.com/e2guardian/e2guardian/archive/v{{ major }}.{{ minor }}.{{ patch }}.zip -O e2g.zip && \
+RUN wget https://github.com/chifu1234/e2guardian/archive/v{{ major }}.{{ minor }}.{{ patch }}.zip -O e2g.zip && \
   unzip e2g.zip && \
     cd e2guardian-{{ major }}.{{ minor }}.{{ patch }} && \
   ./autogen.sh && \
