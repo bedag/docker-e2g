@@ -45,7 +45,7 @@ global_vars: &global_vars
     <<: *global_vars
     major: 5
     minor: 4
-    patch: 3r
+    patch: 4r
     latest: true
 
 535vars: &535vars
