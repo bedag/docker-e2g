@@ -40,13 +40,21 @@ global_vars: &global_vars
       image: alpine:3.13
 
 # e2g versions
+543vars: &543vars
+  variables:
+    <<: *global_vars
+    major: 5
+    minor: 4
+    patch: 4r
+    latest: true
+
 535vars: &535vars
   variables:
     <<: *global_vars
     major: 5
     minor: 3
     patch: 5
-    latest: true
+    latest: false
     
 534vars: &534vars
   variables:
@@ -136,3 +144,5 @@ builds:
   <<: *534vars
 - <<: *build_debug_template
   <<: *535vars
+- <<: *build_debug_template
+  <<: *543vars
