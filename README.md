@@ -34,7 +34,7 @@ Docker builds are created with [bedag/image-build](https://github.com/bedag/imag
 
 [musl compiler](https://www.musl-libc.org/how.html) is used to compile e2guardian.
 
-`gcr.io/distroless/cc` are used because we do not need any common linux binaries, [here](https://github.com/GoogleContainerTools/distroless) you can find more information about distroless images. For troubleshooting we recommend to use our `-debug` images. For more information go to [Debug](#Debug) section.
+`gcr.io/distroless/cc-debian11` are used because we do not need any common linux binaries, [here](https://github.com/GoogleContainerTools/distroless) you can find more information about distroless images. For troubleshooting we recommend to use our `-debug` images. For more information go to [Debug](#Debug) section.
 
 Every Sunday(`0 0 * * SUN`) we automatically update all [supported tags](#Tags) with the current upstream image.
 
