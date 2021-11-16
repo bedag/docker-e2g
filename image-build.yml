@@ -21,7 +21,7 @@ build_base: &build_base
 
 prod_base: &prod_base
   source:
-    name: "gcr.io/distroless/cc"
+    name: "gcr.io/distroless/cc-debian11"
     tags: ["latest"]
 
 debug_base: &debug_base
